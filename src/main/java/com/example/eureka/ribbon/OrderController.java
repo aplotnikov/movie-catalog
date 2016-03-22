@@ -14,9 +14,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 public class OrderController {
-    @Autowired
-    private DiscoveryClient discoveryClient;
-
     @RequestMapping(value = "/orders", method = POST, produces = "application/json")
     public Order orderMovie(@RequestBody NewOrderDetails newOrderDetails) {
         return new Order(UUID.randomUUID().toString());

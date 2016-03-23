@@ -1,5 +1,7 @@
 package com.example.eureka.ribbon;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,12 +18,12 @@ public class OrderController {
     private static AtomicInteger counter = new AtomicInteger();
 
     @RequestMapping(value = "/orders", method = POST, produces = "application/json")
-    public Order orderMovie(@RequestBody NewOrderDetails newOrderDetails) {
+    public ResponseEntity<Order> orderMovie(@RequestBody NewOrderDetails newOrderDetails) {
         if (counter.incrementAndGet() % 2 == 0) {
             LockSupport.parkNanos(TimeUnit.SECONDS.toNanos(5));
-            return new Order("500");
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new Order("500"));
         }
 
-        return new Order(UUID.randomUUID().toString());
+        return ResponseEntity.ok(new Order(UUID.randomUUID().toString()));
     }
 }
